@@ -1,8 +1,24 @@
-name: hello-world
-on: push
+name: Build and Deploy
+ 
+on:
+  push:
+    branches:
+      - main
+ 
 jobs:
-  my-job:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: my-step
-        run: echo "Hello World!"
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+ 
+    - name: Build and Deploy
+      run: |
+        git clone https://github.com/axit678/python-flask-docker.git
+        cd python-flask-docker
+        docker ps
+        docker build -t python-flask-docker .
+        docker run --name my-container -d -p 8080:8080 python-flask-docker
+        sleep 6
+        echo "test"
+        curl 127.0.0.1:8080
